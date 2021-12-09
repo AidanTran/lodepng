@@ -431,7 +431,7 @@ void Huffman::compress(string in_filename, string out_filename, int q = 0)
 
   if (q > 0) {
     for (unsigned long int i = 0; i < image.size(); i++) {
-      image[i] -= image[i] % q;
+      image[i] = min(int(round((float)image[i]/q) * q), 255);
     }
   }
 

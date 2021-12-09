@@ -1,5 +1,8 @@
 Aidan Tran Project 3 CISC220-80
 
+Forked University of Delaware christopher rasmussen's Huffman.cpp and Huffman.hh files.
+Forked https://github.com/lvandeve/lodepng
+
 Use make to compile and make clean to remove all.
 
 ./huffman [-raw | -q 1-254] filename
