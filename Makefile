@@ -1,34 +1,36 @@
-# This makefile only makes the unit test, benchmark and pngdetail and showpng
-# utilities. It does not make the PNG codec itself as shared or static library.
-# That is because:
-# LodePNG itself has only 1 source file (lodepng.cpp, can be renamed to
-# lodepng.c) and is intended to be included as source file in other projects and
-# their build system directly.
+##### Source files and executable ############################################
 
+SRCS 		= main.cpp Huffman.cpp lodepng.cpp raw.cpp
 
-CC ?= gcc
-CXX ?= g++
+OBJECTS 	= main.o Huffman.o lodepng.o raw.o
 
-override CFLAGS := -W -Wall -Wextra -ansi -pedantic -O3 -Wno-unused-function $(CFLAGS)
-override CXXFLAGS := -W -Wall -Wextra -ansi -pedantic -O3 $(CXXFLAGS)
+EXECNAME 	= huffman
 
-all: unittest benchmark pngdetail showpng
+##### Libraries and paths ####################################################
 
-%.o: %.cpp
-	@mkdir -p `dirname $@`
-	$(CXX) -I ./ $(CXXFLAGS) -c $< -o $@
+LIBS            = 
+INCDIRS 	= 
+LIBDIRS 	= 
+ 
+##### Compiler information ###################################################
 
-unittest: lodepng.o lodepng_util.o lodepng_unittest.o
-	$(CXX) $^ $(CXXFLAGS) -o $@
+CPP		= g++
+CPPFLAGS 	= -Wall -Wextra -pedantic -ansi -O3 -std=c++11
 
-benchmark: lodepng.o lodepng_benchmark.o
-	$(CXX) $^ $(CXXFLAGS) -lSDL -o $@
+##### Target compilation #####################################################
 
-pngdetail: lodepng.o lodepng_util.o pngdetail.o
-	$(CXX) $^ $(CXXFLAGS) -o $@
+all:$(EXECNAME)
 
-showpng: lodepng.o examples/example_sdl.o
-	$(CXX) -I ./ $^ $(CXXFLAGS) -lSDL -o $@
+$(EXECNAME): 	$(OBJECTS)
+	$(CPP) $(CPPFLAGS) $(LIBDIRS) $^ $(LIBS) -o $(EXECNAME) 
+
+.cpp.o:	
+	$(CPP) $(CPPFLAGS) $(INCDIRS) -c $<
+
+.cc.o:	
+	$(CPP) $(CPPFLAGS) $(INCDIRS) -c $<
 
 clean:
-	rm -f unittest benchmark pngdetail showpng lodepng_unittest.o lodepng_benchmark.o lodepng.o lodepng_util.o pngdetail.o examples/example_sdl.o
+	rm -rf *~ *.o *.a $(EXECNAME) 
+
+##############################################################################
