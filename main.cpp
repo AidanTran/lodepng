@@ -14,6 +14,7 @@
 //----------------------------------------------------------------------------
 
 bool raw_flag = false;
+unsigned char q = 0;
 
 //----------------------------------------------------------------------------
 
@@ -37,7 +38,7 @@ bool raw_flag = false;
 int main(int argc, char **argv)
 {
   if (argc < 2) {
-    cout << "huffman <filename>\n";
+    cout << "huffman [-raw, -q 1-254] <filename>\n";
     exit(1);
   }
 
@@ -46,6 +47,8 @@ int main(int argc, char **argv)
   for (int i = 1; i < argc; i++) {
     if (!strcmp("-raw", argv[i]))		
       raw_flag = true;
+    else if (!strcmp("-q", argv[i]))		
+      q = atoi(argv[i+1]);
   }
 
   string input_filename(argv[argc - 1]);
@@ -76,7 +79,7 @@ int main(int argc, char **argv)
       }
       else {
         output_filename.replace(output_filename.length() - 4, 4, ".huf");
-        H.compress(input_filename, output_filename);
+        H.compress(input_filename, output_filename, q);
       }
     }
     else {

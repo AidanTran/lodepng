@@ -404,7 +404,7 @@ void Huffman::write_binary_chunk(string & s, ofstream & outStream)
 // read file character by character and keep track of how many times
 // each character occurs
 
-void Huffman::compress(string in_filename, string out_filename)
+void Huffman::compress(string in_filename, string out_filename, int q = 0)
 {
   ofstream outStream;
   char c;
@@ -422,9 +422,18 @@ void Huffman::compress(string in_filename, string out_filename)
   //decode
   unsigned error = lodepng::decode(image, width, height, in_filename);
   //if there's an error, display it
+  if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+
   width = (unsigned short)width;
   height = (unsigned short)height;
-  if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+
+  // AUXILLARY PASS -- quantize based off of q passed in.
+
+  if (q > 0) {
+    for (unsigned long int i = 0; i < image.size(); i++) {
+      image[i] -= image[i] % q;
+    }
+  }
 
   // FIRST PASS -- compute character statistics, build trie
 

@@ -102,7 +102,7 @@ public:
   void print_compression_map();
   void print_decompression_map(ostream &);
   void read_decompression_map(ifstream &);
-  void compress(string, string);
+  void compress(string, string, int);
   void decompress(string, string);
   int binary_2_int(string);
   string int_2_binary(int, int);
