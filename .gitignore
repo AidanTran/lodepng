@@ -2,3 +2,5 @@
 *.png
 *.raw
 *.vscode/*
+*.o
+huffman
